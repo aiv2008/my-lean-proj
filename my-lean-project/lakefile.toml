@@ -1,0 +1,10 @@
+name = "MyLeanProject"
+version = "0.1.0"
+defaultTargets = ["myleanproject"]
+
+[[lean_lib]]
+name = "MyLeanProject"
+
+[[lean_exe]]
+name = "myleanproject"
+root = "Main"
