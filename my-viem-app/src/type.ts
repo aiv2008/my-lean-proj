@@ -1,6 +1,8 @@
-interface Post {
-    id: string;
-    author: string;
-    content: string;
-    createdAt: Date;
+import type { Address } from 'viem'
+
+export type Post = {
+  id: string
+  author: Address
+  content: string
+  createdAt: Date
 }

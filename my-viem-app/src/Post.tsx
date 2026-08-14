@@ -1,8 +1,16 @@
-export default function Post() {
-    return <>
-        <p>先说规律，大家应该都知道，还是讲一讲，每个族有战士和法师两个职业，每个职业都有保底的技能系统。每6级保底出一次智慧术（不一定是6，12，18），战士职业每3级保底一次元素技能，法师职业每2级保底一次，保底的意思是，只要连着3级不出元素技能，下一级必出一次。
-            比如一个战士，2，3级没有出元素技能，4级的时候一定会出一次初级元素技能，出什么根据概率随机。不同职业不一样，有些垃圾职业出水的概率很大。
-            敲黑板！划重点！
-            这个时候一定要学水，并且无脑把水优先点满，等高水以后再过3级，一定会出下一个初级元素技能，如果你不速度点满水，或者放弃学初级水，那么下次保底大概率还是初级水，或者把保底浪费在中级水上，这个时候技能树100%歪，而且大概率学不齐气土。</p>
-    </>
+import { shortAddress } from './address'
+import type { Post as PostData } from './type'
+
+export default function Post({ post }: { post: PostData }) {
+  return (
+    <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <header className="mb-2 flex items-center justify-between gap-3 text-sm text-slate-500">
+        <span className="font-medium text-slate-700">{shortAddress(post.author)}</span>
+        <time dateTime={post.createdAt.toISOString()}>
+          {post.createdAt.toLocaleString()}
+        </time>
+      </header>
+      <p className="whitespace-pre-wrap text-slate-900">{post.content}</p>
+    </article>
+  )
 }

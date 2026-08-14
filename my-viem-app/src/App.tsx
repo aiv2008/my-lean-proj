@@ -1,24 +1,52 @@
-import Post from "./Post";
+import { useState } from 'react'
+import { createWalletClient, custom } from 'viem'
+import { mainnet } from 'viem/chains'
+import type { Address } from 'viem'
+import Post from './Post'
+import { shortAddress } from './address'
+import { mockPosts } from './mockPosts'
 
 export default function App() {
+  const [account, setAccount] = useState<Address | null>(null)
+
+  async function connectWallet() {
+    if (!window.ethereum) {
+      alert('Please install MetaMask!')
+      return
+    }
+
+    const walletClient = createWalletClient({
+      chain: mainnet,
+      transport: custom(window.ethereum),
+    })
+
+    const [address] = await walletClient.requestAddresses()
+    setAccount(address)
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
         <h1 className="text-lg font-semibold text-primary">Web3 Social</h1>
-        <button
-          type="button"
-          className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white"
-        >
-          Connect
-        </button>
+        {account ? (
+          <span className="rounded-md bg-slate-100 px-3 py-1.5 font-mono text-sm text-slate-700">
+            {shortAddress(account)}
+          </span>
+        ) : (
+          <button
+            type="button"
+            className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white"
+            onClick={connectWallet}
+          >
+            Connect
+          </button>
+        )}
       </header>
 
-      <main className="mx-auto max-w-xl px-4 py-6">
-        {/* 下一步：假数据 Feed 放这里 */}
-        <p className="text-sm text-slate-500">Feed 区域（稍后放帖子列表）</p>
-        <Post />
-        <hr className="my-4 border-slate-200" />
-        <Post />
+      <main className="mx-auto flex max-w-xl flex-col gap-4 px-4 py-6">
+        {mockPosts.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
       </main>
     </div>
   )
