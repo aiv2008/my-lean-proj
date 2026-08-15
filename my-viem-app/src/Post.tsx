@@ -14,3 +14,12 @@ export default function Post({ post }: { post: PostData }) {
     </article>
   )
 }
+
+export function NewPost() {
+  return (
+    <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <textarea className="w-full resize-none rounded-md border border-slate-300 p-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Write a post..." />
+      <button className="rounded-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600">Post</button>
+    </article>
+  );
+}

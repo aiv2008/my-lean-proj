@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { createWalletClient, custom } from 'viem'
 import { mainnet } from 'viem/chains'
 import type { Address } from 'viem'
-import Post from './Post'
+import Post, { NewPost } from './Post'
 import { shortAddress } from './address'
 import { mockPosts } from './mockPosts'
+import type { Post as PostData } from './type'
 
 export default function App() {
   const [account, setAccount] = useState<Address | null>(null)
-
+  const [posts, setPosts] = useState<PostData[]>(mockPosts)
   async function connectWallet() {
     if (!window.ethereum) {
       alert('Please install MetaMask!')
@@ -22,6 +23,23 @@ export default function App() {
 
     const [address] = await walletClient.requestAddresses()
     setAccount(address)
+  }
+
+  /**
+   * 发帖
+   */
+  function createPost(content: string) {
+    if (!account) {
+      return
+    }
+
+    const newPost: PostData = {
+      id: crypto.randomUUID(),
+      content,
+      createdAt: new Date(),
+      author: account,
+    }
+    setPosts([newPost, ...posts])
   }
 
   return (
@@ -44,9 +62,10 @@ export default function App() {
       </header>
 
       <main className="mx-auto flex max-w-xl flex-col gap-4 px-4 py-6">
-        {mockPosts.map((post) => (
+        {posts.map((post: PostData) => (
           <Post key={post.id} post={post} />
         ))}
+        <NewPost />
       </main>
     </div>
   )
