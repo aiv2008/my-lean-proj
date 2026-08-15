@@ -15,7 +15,7 @@ export default function Post({ post }: { post: PostData }) {
   )
 }
 
-export function NewPost() {
+export function NewPost({ onSubmit }: { onSubmit: (content: string) => void }) {
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <textarea className="w-full resize-none rounded-md border border-slate-300 p-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Write a post..." />

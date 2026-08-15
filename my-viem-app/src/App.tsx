@@ -65,7 +65,7 @@ export default function App() {
         {posts.map((post: PostData) => (
           <Post key={post.id} post={post} />
         ))}
-        <NewPost />
+        <NewPost onSubmit={createPost} />
       </main>
     </div>
   )
