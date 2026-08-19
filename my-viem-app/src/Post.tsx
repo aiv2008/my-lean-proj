@@ -28,7 +28,11 @@ export function NewPost({ onSubmit }: { onSubmit: (content: string) => void }) {
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      <button className="rounded-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600">
+      <button
+        className="mt-2 rounded-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600 disabled:opacity-40"
+        disabled={text.trim() === ""}
+        onClick={() => { onSubmit(text.trim()); setText(""); }}
+      >
         Post
       </button>
     </article>
