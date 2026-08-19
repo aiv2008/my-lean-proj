@@ -5,10 +5,12 @@ import MyLeanProject
 运行：`lake exe myleanproject`
 -/
 
+
 def demoExpr : Expr :=
   .add (.const 2) (.mul (.const 3) (.const 4))
+  
 
-def main : IO Unit := do
+def main : IO Unit := do  
   IO.println "=== MyLeanProject mini tour ==="
   IO.println s!"hello = {hello}"
   IO.println s!"factorial 5 = {factorial 5}"

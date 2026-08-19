@@ -1,0 +1,359 @@
+# EXWM Setup Guide for Emacs on WSL2
+
+Date: 2026-08-19
+
+## What is EXWM?
+
+EXWM (Emacs X Window Manager) turns Emacs into your entire window manager. Chrome and other applications become Emacs buffers you can switch between with `C-x b`.
+
+---
+
+## Prerequisites
+
+### 1. Check X Server on WSL2
+
+```bash
+# Check if DISPLAY is set
+echo $DISPLAY
+
+# Test X11 with a simple app
+xeyes  # Should open a window with eyes
+```
+
+**If DISPLAY is not set:**
+
+```bash
+# For WSLg (built-in to WSL2)
+export DISPLAY=:0
+
+# Or if using VcXsrv on Windows
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0
+
+# Add to ~/.zshrc to make permanent
+echo 'export DISPLAY=:0' >> ~/.zshrc
+```
+
+### 2. Install Chrome/Chromium
+
+```bash
+# Check if installed
+which google-chrome || which chromium-browser
+
+# Install if missing
+sudo apt update
+sudo apt install chromium-browser
+```
+
+---
+
+## Installation
+
+### Method 1: Using use-package
+
+Add to your `~/.emacs.d/init.el` or `~/.emacs`:
+
+```elisp
+(use-package exwm
+  :ensure t
+  :config
+  
+  ;; Basic configuration
+  (require 'exwm)
+  (require 'exwm-config)
+  (require 'exwm-systemtray)
+  (require 'exwm-randr)
+  
+  ;; Set workspace number
+  (setq exwm-workspace-number 4)
+  
+  ;; Make class name the buffer name
+  (add-hook 'exwm-update-class-hook
+            (lambda ()
+              (exwm-workspace-rename-buffer exwm-class-name)))
+  
+  ;; Global keybindings (available everywhere)
+  (setq exwm-input-global-keys
+        `(
+          ;; Reset to line-mode (pass keys to Emacs)
+          ([?\s-r] . exwm-reset)
+          
+          ;; Switch workspace
+          ([?\s-w] . exwm-workspace-switch)
+          
+          ;; Launch applications
+          ([?\s-&] . (lambda (command)
+                      (interactive (list (read-shell-command "$ ")))
+                      (start-process-shell-command command nil command)))
+          
+          ;; Switch to workspace N
+          ,@(mapcar (lambda (i)
+                     `(,(kbd (format "s-%d" i)) .
+                       (lambda ()
+                         (interactive)
+                         (exwm-workspace-switch-create ,i))))
+                   (number-sequence 0 9))))
+  
+  ;; Line-mode keybindings (when keys go to Emacs)
+  (setq exwm-input-simulation-keys
+        '(
+          ;; Movement
+          ([?\C-b] . [left])
+          ([?\C-f] . [right])
+          ([?\C-p] . [up])
+          ([?\C-n] . [down])
+          ([?\C-a] . [home])
+          ([?\C-e] . [end])
+          ([?\M-v] . [prior])
+          ([?\C-v] . [next])
+          ([?\C-d] . [delete])
+          ([?\C-k] . [S-end delete])
+          ;; Cut/paste
+          ([?\C-w] . [?\C-x])
+          ([?\M-w] . [?\C-c])
+          ([?\C-y] . [?\C-v])
+          ;; Search
+          ([?\C-s] . [?\C-f])))
+  
+  ;; Enable system tray
+  (exwm-systemtray-enable)
+  
+  ;; Start EXWM
+  (exwm-enable))
+```
+
+### Method 2: Minimal Test Configuration
+
+Create `~/.emacs.d/test-exwm.el`:
+
+```elisp
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'exwm)
+  (package-refresh-contents)
+  (package-install 'exwm))
+
+(require 'exwm)
+(require 'exwm-config)
+(exwm-config-default)
+(exwm-enable)
+```
+
+Start with:
+```bash
+emacs -q -l ~/.emacs.d/test-exwm.el
+```
+
+---
+
+## Starting EXWM
+
+### Option A: From existing Emacs session
+
+```elisp
+M-x exwm-enable
+```
+
+### Option B: Create ~/.xinitrc
+
+```bash
+#!/bin/sh
+
+# Load resources
+xrdb -merge ~/.Xresources 2>/dev/null || true
+
+# Start Emacs with EXWM
+exec emacs
+```
+
+Make executable:
+```bash
+chmod +x ~/.xinitrc
+```
+
+Start:
+```bash
+startx
+```
+
+---
+
+## Using EXWM
+
+### Key Bindings
+
+- **Launch app:** `Super-&` then type command (e.g., `chromium-browser`)
+- **Switch workspace:** `Super-0` through `Super-9`
+- **Switch to line-mode:** `Super-r` (keys go to Emacs)
+- **Switch to char-mode:** `C-c C-k` (keys go to application like Chrome)
+- **Switch buffers:** `C-x b` (works with X windows too)
+
+### Two Modes
+
+1. **Line-mode:** Keys go to Emacs (navigate between windows, edit, etc.)
+2. **Char-mode:** Keys go to the X application (type in Chrome, etc.)
+
+Toggle with `C-c C-k` (to char) and `s-r` (to line).
+
+---
+
+## Quick Chrome Launcher
+
+Add to your config:
+
+```elisp
+(defun launch-chrome ()
+  "Launch Google Chrome/Chromium in EXWM."
+  (interactive)
+  (start-process "chrome" nil "chromium-browser"))
+
+(global-set-key (kbd "C-c w c") 'launch-chrome)
+```
+
+Then use `C-c w c` to launch Chrome anytime.
+
+---
+
+## Troubleshooting
+
+### Diagnostics to Run
+
+```bash
+# 1. Check Emacs version
+emacs --version
+
+# 2. Check X11
+echo $DISPLAY
+xeyes
+
+# 3. Check if Chrome is installed
+which chromium-browser
+
+# 4. Test starting X app from shell
+xterm &
+```
+
+### Common Issues
+
+#### "Can't open display"
+
+```bash
+# Set DISPLAY environment variable
+export DISPLAY=:0
+
+# Test
+xeyes
+
+# Make permanent
+echo 'export DISPLAY=:0' >> ~/.zshrc
+```
+
+#### EXWM not found in Emacs
+
+```elisp
+M-x package-refresh-contents
+M-x package-install RET exwm
+```
+
+#### Chrome launches but can't type in it
+
+Press `C-c C-k` to enter **char-mode** (keys go to Chrome).
+
+#### Keys not working as expected
+
+Check which mode you're in:
+- **Line-mode:** Keys go to Emacs (status shows "EXWM")
+- **Char-mode:** Keys go to app (status shows "EXWM:char")
+
+Toggle with `C-c C-k` and `s-r`.
+
+#### Chrome window doesn't appear
+
+```bash
+# Check if process started
+ps aux | grep chromium
+
+# Try launching from Emacs directly
+M-: (start-process "chrome" nil "chromium-browser")
+```
+
+---
+
+## Next Steps
+
+1. **Run diagnostics:**
+   ```bash
+   echo $DISPLAY
+   which chromium-browser
+   emacs --version
+   ```
+
+2. **Try minimal config:**
+   ```bash
+   emacs -q -l ~/.emacs.d/test-exwm.el
+   ```
+
+3. **Launch Chrome:**
+   ```elisp
+   Super-& chromium-browser
+   # Or
+   M-: (start-process "chrome" nil "chromium-browser")
+   ```
+
+4. **Report back what happens** - any errors, what works, what doesn't
+
+---
+
+## Alternative: Simpler Options
+
+If EXWM feels too complex:
+
+### xwidget-webkit (Embedded Browser)
+
+```elisp
+M-x xwidget-webkit-browse-url
+```
+
+Requires Emacs compiled with `--with-xwidgets`.
+
+### EWW (Text Browser)
+
+```elisp
+M-x eww
+```
+
+Built-in, works everywhere, text-only.
+
+### EAF (Emacs Application Framework)
+
+Lighter than EXWM, embeds Chromium as an Emacs buffer:
+
+```bash
+git clone https://github.com/emacs-eaf/emacs-application-framework ~/.emacs.d/eaf
+```
+
+---
+
+## Questions to Answer
+
+Please run these and tell me the results:
+
+```bash
+# 1. Display check
+echo $DISPLAY
+
+# 2. X11 test
+xeyes  # Does a window with eyes appear?
+
+# 3. Chrome check
+which chromium-browser
+
+# 4. Emacs check
+emacs --version
+
+# 5. Try starting basic X app from Emacs
+emacs --eval "(start-process \"test\" nil \"xterm\")"
+```
+
+Share the output and any error messages!
