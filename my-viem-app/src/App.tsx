@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createWalletClient, custom } from 'viem'
 import { mainnet } from 'viem/chains'
 import type { Address } from 'viem'
@@ -39,6 +39,7 @@ export default function App() {
       createdAt: new Date(),
       author: account,
     }
+          
     setPosts([newPost, ...posts])
   }
 
