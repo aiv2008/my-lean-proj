@@ -7,9 +7,42 @@ import { shortAddress } from './address'
 import { mockPosts } from './mockPosts'
 import type { Post as PostData } from './type'
 
+const STORAGE_KEY = 'web3-social-posts';
+
 export default function App() {
-  const [account, setAccount] = useState<Address | null>(null)
-  const [posts, setPosts] = useState<PostData[]>(mockPosts)
+    const [account, setAccount] = useState<Address | null>(null);
+    const [posts, setPosts] = useState<PostData[]>(()=>{
+        const stored = localStorage.getItem(STORAGE_KEY) ;
+        if(stored){
+            try{
+                return JSON.parse(stored).map((p: any)=>({
+                    ...p,
+                    createdAt: new Date(p.createdAt)
+                }));
+            }catch(e){
+                return mockPosts;
+            }
+        }
+        return mockPosts;
+    });
+    useEffect(()=>{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    },[posts]);
+    // listen for account changes
+    useEffect(()=>{
+        if(!window.ethereum)return;
+        const handleAccountsChanged = (accounts: string[]) =>{
+            if(accounts.length === 0){
+                setAccount(null);
+            }else{
+                setAccount(accounts[0] as Address);
+            }
+        };
+        window.ethereum.on('accountsChanged', handleAccountsChanged);
+        return ()=>{
+            window.ethereum?.removeListener('accountsChanged',handleAccountsChanged);
+        }
+    },[]);
   async function connectWallet() {
     if (!window.ethereum) {
       alert('Please install MetaMask!')
