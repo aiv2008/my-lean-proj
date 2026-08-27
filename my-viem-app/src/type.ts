@@ -5,6 +5,7 @@ export type Post = {
   author: Address;
   content: string;
   createdAt: Date;
+  likes: Address[];
 };
 export type User = {
   address: Address;

@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { shortAddress } from "./address";
 import type { Post as PostData } from "./type";
+import type { Address } from "viem";
 
 export default function Post({
   post,
+  currentAccount,
   canDelete = false,
   onDelete,
 }: {
   post: PostData;
+  currentAccount: Address;
   canDelete?: boolean;
   onDelete?: (id: string) => void;
 }) {
