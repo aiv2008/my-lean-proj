@@ -1,25 +1,25 @@
 import { useState } from "react";
-import { shortAddress } from "./address";
+import { shortAddress,isSameAddress } from "./address";
 import type { Post as PostData } from "./type";
 import type { Address } from "viem";
 
 export default function Post({
   post,
   currentAccount,
-  canDelete = false,
   onDelete,
 }: {
   post: PostData;
-  currentAccount: Address;
-  canDelete?: boolean;
+  currentAccount: Address|null;
   onDelete?: (id: string) => void;
 }) {
+    const canDelete  = !!onDelete && isSameAddress(post.author, currentAccount);
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <header className="mb-2 flex items-center justify-between gap-3 text-sm text-slate-500">
         <span className="font-medium text-slate-700">
           {shortAddress(post.author)}
-        </span>
+      </span>
+          <div>
         <time dateTime={post.createdAt.toISOString()}>
           {post.createdAt.toLocaleString()}
         </time>
@@ -32,6 +32,7 @@ export default function Post({
             x
           </button>
         )}
+      </div>
       </header>
       <p className="whitespace-pre-wrap text-slate-900">{post.content}</p>
     </article>
