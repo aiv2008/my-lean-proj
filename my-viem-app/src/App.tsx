@@ -73,11 +73,53 @@ export default function App() {
       content,
       createdAt: new Date(),
       author: account,
+      likes: [],
     };
 
     setPosts([newPost, ...posts]);
   }
+  /**
+   *
+   **/
+  function deletePost(id: string) {
+    setPosts(posts.filter((p) => p.id !== id));
+  }
+  /**
+   * 点赞/取消点赞
+   */
+  function toggleLike(postId: string) {
+    if (!account) {
+      return;
+    }
 
+    setPosts(
+      posts.map((post) => {
+        if (post.id !== postId) {
+          return post;
+        }
+
+        const hasLiked = post.likes.some(
+          (addr) => addr.toLowerCase() === account.toLowerCase(),
+        );
+
+        if (hasLiked) {
+          // 取消点赞
+          return {
+            ...post,
+            likes: post.likes.filter(
+              (addr) => addr.toLowerCase() !== account.toLowerCase(),
+            ),
+          };
+        } else {
+          // 添加点赞
+          return {
+            ...post,
+            likes: [...post.likes, account],
+          };
+        }
+      }),
+    );
+  }
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
@@ -108,9 +150,15 @@ export default function App() {
 
       <main className="mx-auto flex max-w-xl flex-col gap-4 px-4 py-6">
         {posts.map((post: PostData) => (
-          <Post key={post.id} post={post} />
+          <Post
+            key={post.id}
+            post={post}
+            currentAccount={account}
+            onDelete={deletePost}
+            onLike={toggleLike} // NEW: Connected like functionality
+          />
         ))}
-        <NewPost onSubmit={createPost} />
+        <NewPost onSubmit={createPost} currentAccount={account} />
       </main>
     </div>
   );

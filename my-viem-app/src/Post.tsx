@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { shortAddress,isSameAddress } from "./address";
+import { shortAddress, isSameAddress } from "./address";
 import type { Post as PostData } from "./type";
 import type { Address } from "viem";
 
@@ -7,39 +7,49 @@ export default function Post({
   post,
   currentAccount,
   onDelete,
+  onLike,
 }: {
   post: PostData;
-  currentAccount: Address|null;
+  currentAccount: Address | null;
   onDelete?: (id: string) => void;
+  onLike?: (id: string) => void;
 }) {
-    const canDelete  = !!onDelete && isSameAddress(post.author, currentAccount);
+  const canDelete = !!onDelete && isSameAddress(post.author, currentAccount);
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <header className="mb-2 flex items-center justify-between gap-3 text-sm text-slate-500">
         <span className="font-medium text-slate-700">
           {shortAddress(post.author)}
-      </span>
-          <div>
-        <time dateTime={post.createdAt.toISOString()}>
-          {post.createdAt.toLocaleString()}
-        </time>
-        {canDelete && onDelete && (
-          <button
-            onClick={() => onDelete(post.id)}
-            className="text-red-500 hover:text-red-700"
-            aria-label="Delete post"
-          >
-            x
-          </button>
-        )}
-      </div>
+        </span>
+        <div>
+          <time dateTime={post.createdAt.toISOString()}>
+            {post.createdAt.toLocaleString()}
+          </time>
+          {canDelete && onDelete && (
+            <button
+              onClick={() => onDelete(post.id)}
+              className="text-red-500 hover:text-red-700"
+              aria-label="Delete post"
+            >
+              x
+            </button>
+          )}
+        </div>
       </header>
       <p className="whitespace-pre-wrap text-slate-900">{post.content}</p>
     </article>
   );
 }
 
-export function NewPost({ onSubmit }: { onSubmit: (content: string) => void }) {
+export function NewPost({
+  onSubmit,
+  currentAccount,
+  onLike,
+}: {
+  onSubmit: (content: string) => void;
+  currentAccount: Address | null;
+  onLike?: (id: string) => void;
+}) {
   const [text, setText] = useState("");
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
