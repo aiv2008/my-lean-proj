@@ -13,6 +13,7 @@ export default function App() {
   const [account, setAccount] = useState<Address | null>(null);
   const [posts, setPosts] = useState<PostData[]>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
+    console.log(`stored = ${JSON.stringify(stored)}`);
     if (stored) {
       try {
         return JSON.parse(stored).map((p: any) => ({
@@ -98,10 +99,9 @@ export default function App() {
           return post;
         }
 
-        const hasLiked = post.likes.some(
+        const hasLiked = post.likes?.some(
           (addr) => addr.toLowerCase() === account.toLowerCase(),
         );
-
         if (hasLiked) {
           // 取消点赞
           return {
@@ -114,7 +114,7 @@ export default function App() {
           // 添加点赞
           return {
             ...post,
-            likes: [...post.likes, account],
+            likes: [...post?.likes, account],
           };
         }
       }),

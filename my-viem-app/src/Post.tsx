@@ -15,6 +15,9 @@ export default function Post({
   onLike?: (id: string) => void;
 }) {
   const canDelete = !!onDelete && isSameAddress(post.author, currentAccount);
+  const hasLiked = currentAccount
+    ? post.likes?.some((addr) => isSameAddress(addr, currentAccount))
+    : false;
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <header className="mb-2 flex items-center justify-between gap-3 text-sm text-slate-500">
@@ -37,6 +40,23 @@ export default function Post({
         </div>
       </header>
       <p className="whitespace-pre-wrap text-slate-900">{post.content}</p>
+      {onLike && (
+        <footer className="flex items-center gap-2 border-t border-slate-100 pt-3">
+          <button
+            onClick={() => onLike(post.id)}
+            disabled={!currentAccount}
+            className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+              hasLiked
+                ? "bg-red-50 text-red-600 hover:bg-red-100"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            } disabled:opacity-40 disabled:cursor-not-allowed`}
+            aria-label={hasLiked ? "Unlike post" : "Like post"}
+          >
+            <span className="text-base">{hasLiked ? "❤️" : "🤍"}</span>
+            <span className="text-base">{post?.likes?.length}</span>
+          </button>
+        </footer>
+      )}
     </article>
   );
 }
