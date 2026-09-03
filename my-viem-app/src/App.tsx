@@ -5,7 +5,7 @@ import type { Address } from "viem";
 import Post, { NewPost } from "./Post";
 import { shortAddress } from "./address";
 import { mockPosts } from "./mockPosts";
-import type { Post as PostData } from "./type";
+import type { Post as PostData, Comment } from "./type";
 
 const STORAGE_KEY = "web3-social-posts";
 
@@ -75,6 +75,7 @@ export default function App() {
       createdAt: new Date(),
       author: account,
       likes: [],
+      comments: [],
     };
 
     setPosts([newPost, ...posts]);
@@ -120,6 +121,48 @@ export default function App() {
       }),
     );
   }
+
+  /**
+   * 添加评论
+   **/
+  function addComment(postId: string, content: string) {
+    if (!account) {
+      return;
+    }
+    setPosts(
+      posts.map((post) => {
+        if (post.id !== postId) {
+          return post;
+        }
+        const newComment: Comment = {
+          id: crypto.randomUUID(),
+          author: account,
+          content,
+          createAt: new Date(),
+        };
+        return {
+          ...post,
+          comments: [...post.comments, newComment],
+        };
+      }),
+    );
+  }
+  /**
+   * 删除评论
+   */
+  function deleteComment(postId: string, commentId: string) {
+    setPosts(
+      posts.map((post) => {
+        if (post.id !== postId) {
+          return post;
+        }
+        return {
+          ...post,
+          comments: post.comments.filter((c) => c.id !== commentId),
+        };
+      }),
+    );
+  }
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
@@ -156,6 +199,8 @@ export default function App() {
             currentAccount={account}
             onDelete={deletePost}
             onLike={toggleLike} // NEW: Connected like functionality
+            onAddComment={addComment}
+            onDeleteComment={deleteComment}
           />
         ))}
         <NewPost onSubmit={createPost} currentAccount={account} />

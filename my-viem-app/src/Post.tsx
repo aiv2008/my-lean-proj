@@ -8,16 +8,28 @@ export default function Post({
   currentAccount,
   onDelete,
   onLike,
+  onAddComment,
+  onDeleteComment,
 }: {
   post: PostData;
   currentAccount: Address | null;
   onDelete?: (id: string) => void;
   onLike?: (id: string) => void;
+  onAddComment?: (postId: string, content: string) => void;
+  onDeleteComment?: (postId: string, commentId: string) => void;
 }) {
+  const [commentText, setCommentText] = useState("");
+  const [showComments, setShowComments] = useState(false);
   const canDelete = !!onDelete && isSameAddress(post.author, currentAccount);
   const hasLiked = currentAccount
     ? post.likes?.some((addr) => isSameAddress(addr, currentAccount))
     : false;
+  const handleAddComment = () => {
+    if (commentText.trim() && onAddComment) {
+      onAddComment(post.id, commentText.trim());
+      setCommentText("");
+    }
+  };
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <header className="mb-2 flex items-center justify-between gap-3 text-sm text-slate-500">
@@ -55,6 +67,8 @@ export default function Post({
             <span className="text-base">{hasLiked ? "❤️" : "🤍"}</span>
             <span className="text-base">{post?.likes?.length}</span>
           </button>
+
+          <button></button>
         </footer>
       )}
     </article>
