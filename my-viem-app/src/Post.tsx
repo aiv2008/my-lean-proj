@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { shortAddress, isSameAddress } from "./address";
-import type { Post as PostData } from "./type";
+import type { Post as PostData, Comment } from "./type";
 import type { Address } from "viem";
 
 export default function Post({
@@ -52,25 +52,73 @@ export default function Post({
         </div>
       </header>
       <p className="whitespace-pre-wrap text-slate-900">{post.content}</p>
-      {onLike && (
-        <footer className="flex items-center gap-2 border-t border-slate-100 pt-3">
-          <button
-            onClick={() => onLike(post.id)}
-            disabled={!currentAccount}
-            className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-              hasLiked
-                ? "bg-red-50 text-red-600 hover:bg-red-100"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-            } disabled:opacity-40 disabled:cursor-not-allowed`}
-            aria-label={hasLiked ? "Unlike post" : "Like post"}
-          >
-            <span className="text-base">{hasLiked ? "❤️" : "🤍"}</span>
-            <span className="text-base">{post?.likes?.length}</span>
-          </button>
+      <footer className="mt-3 space-y-3">
+        {/* Like button */}
+        {onLike && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => onLike(post.id)}
+              disabled={!currentAccount}
+              className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                hasLiked
+                  ? "bg-red-50 text-red-600 hover:bg-red-100"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+              } disabled:opacity-40 disabled:cursor-not-allowed`}
+              aria-label={hasLiked ? "Unlike post" : "Like post"}
+            >
+              <span className="text-base">{hasLiked ? "❤️" : "🤍"}</span>
+              <span className="text-base">{post?.likes?.length}</span>
+            </button>
 
-          <button></button>
-        </footer>
-      )}
+            <button
+              onClick={() => setShowComments(!showComments)}
+              className="flex items-center gap-1.5 rounded-md bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-200"
+            >
+              <span>💬</span>
+              <span>{post.comments?.length || 0}</span>
+            </button>
+          </div>
+        )}
+        {/* Comments section */}
+        {showComments && (
+          <div className="border-t border-slate-100 pt-3 space-y-3">
+            {/* Existing comments */}
+            {post.comments && post.comments.length > 0 && (
+              <div className="space-y-2">
+                {post.comments.map((comment: Comment) => (
+                  <div
+                    key={comment.id}
+                    className="rounded-md bg-slate-50 p-3 text-sm"
+                  >
+                    <div className="mb-1 flex items-center justify-between text-xs text-slate-500">
+                      <span className="font-medium text-slate-700">
+                        {shortAddress(comment.author)}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <time dateTime={comment.createAt.toISOString()}>
+                          {comment.createAt.toLocaleString()}
+                        </time>
+                        {isSameAddress(comment.author, currentAccount) &&
+                          onDeleteComment && (
+                            <button
+                              onClick={() =>
+                                onDeleteComment(post.id, comment.id)
+                              }
+                              className="text-red-500 hover:text-red-700"
+                              aria-lable="Delete comment"
+                            >
+                              x
+                            </button>
+                          )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </footer>
     </article>
   );
 }
