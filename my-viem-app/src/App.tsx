@@ -142,7 +142,7 @@ export default function App() {
         };
         return {
           ...post,
-          comments: [...post.comments, newComment],
+          comments: [...(post.comments ?? []), newComment],
         };
       }),
     );

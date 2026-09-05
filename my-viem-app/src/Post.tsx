@@ -95,7 +95,7 @@ export default function Post({
                         {shortAddress(comment.author)}
                       </span>
                       <div className="flex items-center gap-2">
-                        <time dateTime={comment.createAt.toISOString()}>
+                        <time dateTime={comment.createAt.toLocaleString()}>
                           {comment.createAt.toLocaleString()}
                         </time>
                         {isSameAddress(comment.author, currentAccount) &&
@@ -112,8 +112,34 @@ export default function Post({
                           )}
                       </div>
                     </div>
+                    <p className="text-slate-900">{comment.content}</p>
                   </div>
                 ))}
+              </div>
+            )}
+            {/* Add comment input */}
+            {currentAccount && onAddComment && (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleAddComment();
+                    }
+                  }}
+                  placeholder="写评论..."
+                  className="flex-1 rounded-md border bordder-slate-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  onClick={handleAddComment}
+                  disabled={!commentText.trim()}
+                  className="rounded-md bg-blue-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  发送
+                </button>
               </div>
             )}
           </div>
