@@ -19,6 +19,11 @@ export default function App() {
         return JSON.parse(stored).map((p: any) => ({
           ...p,
           createdAt: new Date(p.createdAt),
+          comments:
+            p.comments?.map((c: any) => ({
+              ...c,
+              createAt: new Date(c.createAt),
+            })) || [],
         }));
       } catch (e) {
         return mockPosts;

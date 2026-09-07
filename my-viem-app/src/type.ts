@@ -7,6 +7,7 @@ export type Post = {
   createdAt: Date;
   likes: Address[];
   comments: Comment[];
+  images?: string[];
 };
 export type User = {
   address: Address;

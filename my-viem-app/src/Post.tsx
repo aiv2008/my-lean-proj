@@ -10,6 +10,7 @@ export default function Post({
   onLike,
   onAddComment,
   onDeleteComment,
+  onSubmit,
 }: {
   post: PostData;
   currentAccount: Address | null;
@@ -17,9 +18,11 @@ export default function Post({
   onLike?: (id: string) => void;
   onAddComment?: (postId: string, content: string) => void;
   onDeleteComment?: (postId: string, commentId: string) => void;
+  onSubmit: (content: string, images?: string[]) => void;
 }) {
   const [commentText, setCommentText] = useState("");
   const [showComments, setShowComments] = useState(false);
+  const [images, setImages] = useState<string[]>([]);
   const canDelete = !!onDelete && isSameAddress(post.author, currentAccount);
   const hasLiked = currentAccount
     ? post.likes?.some((addr) => isSameAddress(addr, currentAccount))
@@ -30,6 +33,28 @@ export default function Post({
       setCommentText("");
     }
   };
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+    Array.from(files).forEach((file) => {
+      if (!file.type.startsWith("image/")) {
+        alert("请选择图片文件");
+        return;
+      }
+      if (file.size > MAX_SIZE) {
+        alert("图片大小不能超过 5MB");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setImages((prev) => [...prev, event.target!.result as string]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <header className="mb-2 flex items-center justify-between gap-3 text-sm text-slate-500">
@@ -37,7 +62,7 @@ export default function Post({
           {shortAddress(post.author)}
         </span>
         <div>
-          <time dateTime={post.createdAt.toISOString()}>
+          <time dateTime={post.createdAt.toLocaleString()}>
             {post.createdAt.toLocaleString()}
           </time>
           {canDelete && onDelete && (
@@ -105,7 +130,7 @@ export default function Post({
                                 onDeleteComment(post.id, comment.id)
                               }
                               className="text-red-500 hover:text-red-700"
-                              aria-lable="Delete comment"
+                              aria-label="Delete comment"
                             >
                               x
                             </button>
@@ -131,7 +156,7 @@ export default function Post({
                     }
                   }}
                   placeholder="写评论..."
-                  className="flex-1 rounded-md border bordder-slate-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 rounded-md border border-slate-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button
                   onClick={handleAddComment}
@@ -159,6 +184,26 @@ export function NewPost({
   onLike?: (id: string) => void;
 }) {
   const [text, setText] = useState("");
+  const [images, setImages] = useState<string[]>([]);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    Array.from(files).forEach((file) => {
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          if (event.target?.result) {
+            setImages((prev) => [...prev, event.target!.result as string]);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  };
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter());
+  };
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <textarea
