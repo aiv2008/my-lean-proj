@@ -77,6 +77,20 @@ export default function Post({
         </div>
       </header>
       <p className="whitespace-pre-wrap text-slate-900">{post.content}</p>
+      {/* Display images */}
+      {post.images && post.images.length > 0 && (
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          {post.images.map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              alt={`Post image ${index + 1}`}
+              className="w-full rounded-md object-cover"
+              style={{ maxHeight: "300px" }}
+            />
+          ))}
+        </div>
+      )}
       <footer className="mt-3 space-y-3">
         {/* Like button */}
         {onLike && (
@@ -179,7 +193,7 @@ export function NewPost({
   currentAccount,
   onLike,
 }: {
-  onSubmit: (content: string) => void;
+  onSubmit: (content: string, images: string[] | null) => void;
   currentAccount: Address | null;
   onLike?: (id: string) => void;
 }) {
@@ -202,8 +216,15 @@ export function NewPost({
     });
   };
   const removeImage = (index: number) => {
-    setImages((prev) => prev.filter());
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
+
+  const handleSubmit = () => {
+    onSubmit(text.trim(), images.length > 0 ? images : null);
+    setText("");
+    setImages([]);
+  };
+
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <textarea
@@ -212,13 +233,45 @@ export function NewPost({
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
+
+      {/**Image previews**/}
+      {images.length > 0 && (
+        <div>
+          {images.map((img, index) => (
+            <div key={index} className="relative">
+              <img
+                src={img}
+                alt={`Preview ${index + 1}`}
+                className="h-32 w-full rounded-md object-cover"
+              />
+              <button
+                onClick={() => {
+                  removeImage(index);
+                }}
+                className="absolute right-1 top-1 rounded-full bg-red-500 px-2 py-0.5 text-xs text-white hover:bg-red-600"
+              >
+                x
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="mt-2 flex items-center gap-2">
+        <label className="cursor-pointer rounded-md bg-slate-100 px-3 py-2 text-sm text-slate-700 hover:bg-slate-200">
+          <span>📷 图片</span>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={handleImageUpload}
+          />
+        </label>
+      </div>
       <button
-        className="mt-2 rounded-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600 disabled:opacity-40"
-        disabled={text.trim() === ""}
-        onClick={() => {
-          onSubmit(text.trim());
-          setText("");
-        }}
+        className="mt-auto rounded-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed"
+        disabled={text.trim() === "" && images.length === 0}
+        onClick={handleSubmit}
       >
         Post
       </button>

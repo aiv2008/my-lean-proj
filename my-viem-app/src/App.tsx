@@ -69,7 +69,7 @@ export default function App() {
   /**
    * 发帖
    */
-  function createPost(content: string) {
+  function createPost(content: string, images?: string[]) {
     if (!account) {
       return;
     }
@@ -81,6 +81,7 @@ export default function App() {
       author: account,
       likes: [],
       comments: [],
+      images: images || [],
     };
 
     setPosts([newPost, ...posts]);
