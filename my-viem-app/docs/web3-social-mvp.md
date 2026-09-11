@@ -127,6 +127,16 @@
 | 2026-08-10 | 选定方向 B | 文档建立；下一目标：完成第 1 关 |
 | 2026-09-08 | 第 1-3 关完成 | ✅ Feed + 钱包连接<br>✅ 发帖功能<br>✅ 钱包体验打磨<br>✅ 额外完成：点赞、评论、图片上传、localStorage 持久化 |
 | 2026-09-08 | 准备第 4 关 | 下一目标：发帖签名验证（signMessage） |
+| 2026-09-11 | 第 0 关收尾（接近完成） | 代码复查：`tsc` 13 → 10 → **3 错误**<br>✅ 修完：`Post` 的死 prop / 死 state、`NewPost.onSubmit` 的 `images` 类型、`mockPosts` 缺字段<br>⬜ 仅剩：`sign.ts` 的 3 个未使用 import（`tsc` 未清零，**尚不能 build**）<br>📋 清单见 **[step0-review.md](./step0-review.md)** |
+| 2026-09-11 | 第 4 关设计定案 | ✅ `Post` 的 `onSubmit` 确认为**有意删除**（评论走 `onAddComment`，发帖+图片走 `NewPost.onSubmit`）<br>✅ 签名**必须覆盖 `images`** —— 别人换图必须验签失败<br>　 → 实现上**签每张图的 `keccak256` 哈希，不签 base64 原文**（否则 MetaMask 弹窗几 MB 乱码，用户无法审阅）<br>下一步：`type.ts` 加 `signature?: Hex` + 扩展 `buildPostMessage` |
+
+---
+
+## 当前任务
+
+**第 0 关收尾** —— 把 `tsc` 错误清零，详见 [step0-review.md](./step0-review.md)。
+
+完成后即可开始**第 4 关：进阶 Web3 味 —— 发帖 `signMessage` 签名验证**（见上方「建造顺序」）。
 
 ---
 

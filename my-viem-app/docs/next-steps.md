@@ -1,6 +1,22 @@
 
 # Next Steps for Web3 Social App
 
+## 🚧 Blocking: finish Step 0 (type errors) first
+
+`npx tsc --noEmit` reports **3 errors**, all in `src/sign.ts` (unused imports `recoverMessageAddress`, `Hex`, `isSameAddress`) — the project cannot build until they are resolved.
+
+Progress: 13 → 10 → **3** errors.
+
+1. ✅ Delete leftover `images` / `setImages` state in `Post.tsx`
+2. ✅ Unify `NewPost.onSubmit` to `images?: string[]` (note: declared optional, not required — see review doc)
+3. ✅ `currentAccount` on `NewPost` — option (b) chosen: attribute dropped from `App.tsx`. **Side effect still open:** unconnected users clicking "Post" get no feedback at all
+4. ✅ `mockPosts.ts` — `comments: []` added, unused `Address` import dropped
+5. ⬜ `sign.ts` — drop the 3 unused imports (or write `signPost` / `verifyPost` now, which uses them)
+
+Also open: is the removal of `Post`'s `onSubmit` intentional? And should post signatures cover `images`?
+
+📋 Full checklist with reasons: **[step0-review.md](./step0-review.md)**
+
 ## Testing & Verification
 
 1. **Run the app** - Test the wallet connection and account switching functionality to verify the fix works

@@ -10,7 +10,6 @@ export default function Post({
   onLike,
   onAddComment,
   onDeleteComment,
-  onSubmit,
 }: {
   post: PostData;
   currentAccount: Address | null;
@@ -18,11 +17,9 @@ export default function Post({
   onLike?: (id: string) => void;
   onAddComment?: (postId: string, content: string) => void;
   onDeleteComment?: (postId: string, commentId: string) => void;
-  onSubmit: (content: string, images?: string[]) => void;
 }) {
   const [commentText, setCommentText] = useState("");
   const [showComments, setShowComments] = useState(false);
-  const [images, setImages] = useState<string[]>([]);
   const canDelete = !!onDelete && isSameAddress(post.author, currentAccount);
   const hasLiked = currentAccount
     ? post.likes?.some((addr) => isSameAddress(addr, currentAccount))
@@ -30,30 +27,9 @@ export default function Post({
   const handleAddComment = () => {
     if (commentText.trim() && onAddComment) {
       onAddComment(post.id, commentText.trim());
-      setCommentText("");
+
+        setCommentText("");
     }
-  };
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
-    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-    Array.from(files).forEach((file) => {
-      if (!file.type.startsWith("image/")) {
-        alert("请选择图片文件");
-        return;
-      }
-      if (file.size > MAX_SIZE) {
-        alert("图片大小不能超过 5MB");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setImages((prev) => [...prev, event.target!.result as string]);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
   };
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
@@ -190,12 +166,8 @@ export default function Post({
 
 export function NewPost({
   onSubmit,
-  currentAccount,
-  onLike,
 }: {
-  onSubmit: (content: string, images: string[] | null) => void;
-  currentAccount: Address | null;
-  onLike?: (id: string) => void;
+  onSubmit: (content: string, images?: string[]) => void;
 }) {
   const [text, setText] = useState("");
   const [images, setImages] = useState<string[]>([]);
@@ -220,7 +192,7 @@ export function NewPost({
   };
 
   const handleSubmit = () => {
-    onSubmit(text.trim(), images.length > 0 ? images : null);
+    onSubmit(text.trim(), images);
     setText("");
     setImages([]);
   };
@@ -271,7 +243,7 @@ export function NewPost({
       <button
         className="mt-auto rounded-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed"
         disabled={text.trim() === "" && images.length === 0}
-        onClick={handleSubmit}
+      onClick={handleSubmit}
       >
         Post
       </button>

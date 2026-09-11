@@ -81,7 +81,7 @@ export default function App() {
       author: account,
       likes: [],
       comments: [],
-      images: images || [],
+      images: images,
     };
 
     setPosts([newPost, ...posts]);
@@ -209,7 +209,7 @@ export default function App() {
             onDeleteComment={deleteComment}
           />
         ))}
-        <NewPost onSubmit={createPost} currentAccount={account} />
+        <NewPost onSubmit={createPost}  />
       </main>
     </div>
   );
