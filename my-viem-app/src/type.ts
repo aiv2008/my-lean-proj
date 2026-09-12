@@ -1,4 +1,4 @@
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 
 export type Post = {
   id: string;
@@ -7,7 +7,8 @@ export type Post = {
   createdAt: Date;
   likes: Address[];
   comments: Comment[];
-  images?: string[];
+    images?: string[];
+    signature?: Hex;
 };
 export type User = {
   address: Address;
