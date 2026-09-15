@@ -6,6 +6,7 @@ import Post, { NewPost } from "./Post";
 import { shortAddress } from "./address";
 import { mockPosts } from "./mockPosts";
 import type { Post as PostData, Comment } from "./type";
+import { buildPostMessage } from "./sign";
 
 const STORAGE_KEY = "web3-social-posts";
 
@@ -49,17 +50,23 @@ export default function App() {
       window.ethereum?.removeListener("accountsChanged", handleAccountsChanged);
     };
   }, []);
-  async function connectWallet() {
-    if (!window.ethereum) {
-      alert("Please install MetaMask!");
-      return;
-    }
 
-    const walletClient = createWalletClient({
+  function getWalletClient() {
+    if (!window.ethereum) {
+      return null;
+    }
+    return createWalletClient({
       chain: mainnet,
       transport: custom(window.ethereum),
     });
+  }
 
+  async function connectWallet() {
+    const walletClient = getWalletClient();
+    if (!walletClient) {
+      alert("Please install MetaMask!");
+      return;
+    }
     const [address] = await walletClient.requestAddresses();
     setAccount(address);
   }
@@ -69,11 +76,13 @@ export default function App() {
   /**
    * 发帖
    */
-  function createPost(content: string, images?: string[]) {
+  async function createPost(content: string, images?: string[]) {
     if (!account) {
-      return;
+      return false;
     }
-
+    const walletClient = getWalletClient();
+    if (!walletClient) return false;
+    // 1) 先把 post 完整组装好 —— 和最终要存的完全一致
     const newPost: PostData = {
       id: crypto.randomUUID(),
       content,
@@ -83,8 +92,24 @@ export default function App() {
       comments: [],
       images: images,
     };
-
-    setPosts([newPost, ...posts]);
+    // 2) 用同一个对象构造待签名文本（不是重新拼一遍参数！）
+    const message = buildPostMessage(newPost);
+    try {
+      // 3) 签名
+      const signature = await walletClient.signMessage({ account, message });
+      // 4) 签名成功才入库
+      setPosts([{ ...newPost, signature }, ...posts]);
+      return true;
+    } catch (err) {
+      // 5) 失败绝不能入库
+      if ((err as { code?: number }).code === 4001) {
+        alert("你取消了签名，帖子没有发布");
+      } else {
+        console.error(err);
+        alert("签名失败，帖子没有发布");
+      }
+      return false;
+    }
   }
   /**
    *
@@ -209,7 +234,7 @@ export default function App() {
             onDeleteComment={deleteComment}
           />
         ))}
-        <NewPost onSubmit={createPost}  />
+        <NewPost onSubmit={createPost} />
       </main>
     </div>
   );

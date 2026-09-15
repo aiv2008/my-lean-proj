@@ -1,4 +1,4 @@
-(()) import { recoverMessageAddress } from "viem";
+import { recoverMessageAddress } from "viem";
 import type { Address, Hex } from "viem";
 import { keccak256, stringToBytes } from "viem";
 import { isSameAddress } from "./address";
@@ -17,12 +17,10 @@ export function buildPostMessage(input: {
   const imageHashes = (input.images ?? []).map((img) =>
     keccak256(stringToBytes(img)),
   );
-
   return [
-    "Web3 Social — 发帖签名",
+    "Web3 Social — 发帖签名 v1",
     `作者: ${input.author.toLowerCase()}`,
     `时间: ${input.createdAt.toISOString()}`,
-
     `图片数: ${imageHashes.length}`,
     ...imageHashes,
     "内容:",

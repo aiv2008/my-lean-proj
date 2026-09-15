@@ -28,7 +28,7 @@ export default function Post({
     if (commentText.trim() && onAddComment) {
       onAddComment(post.id, commentText.trim());
 
-        setCommentText("");
+      setCommentText("");
     }
   };
   return (
@@ -167,7 +167,7 @@ export default function Post({
 export function NewPost({
   onSubmit,
 }: {
-  onSubmit: (content: string, images?: string[]) => void;
+  onSubmit: (content: string, images?: string[]) => Promise<Boolean>;
 }) {
   const [text, setText] = useState("");
   const [images, setImages] = useState<string[]>([]);
@@ -191,10 +191,18 @@ export function NewPost({
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = () => {
-    onSubmit(text.trim(), images);
-    setText("");
-    setImages([]);
+  const [isSubmittingg, setIsSubmitting] = useState(false);
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      const ok = await onSubmit(text.trim(), images);
+      if (ok) {
+        setText("");
+        setImages([]);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -243,7 +251,7 @@ export function NewPost({
       <button
         className="mt-auto rounded-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed"
         disabled={text.trim() === "" && images.length === 0}
-      onClick={handleSubmit}
+        onClick={handleSubmit}
       >
         Post
       </button>
