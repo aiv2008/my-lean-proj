@@ -6,15 +6,15 @@ import Post, { NewPost } from "./Post";
 import { shortAddress } from "./address";
 import { mockPosts } from "./mockPosts";
 import type { Post as PostData, Comment } from "./type";
-import { buildPostMessage } from "./sign";
+import { buildPostMessage, signPost } from "./sign";
 
 const STORAGE_KEY = "web3-social-posts";
 
 export default function App() {
   const [account, setAccount] = useState<Address | null>(null);
   const [posts, setPosts] = useState<PostData[]>(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    console.log(`stored = ${JSON.stringify(stored)}`);
+      const stored = localStorage.getItem(STORAGE_KEY);
+      console.log(`stored: ${JSON.stringify(stored)}`);
     if (stored) {
       try {
         return JSON.parse(stored).map((p: any) => ({
@@ -33,7 +33,16 @@ export default function App() {
     return mockPosts;
   });
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    // 图片走 base64，配额很容易被撑爆；不兜住的话 useEffect 抛异常会直接
+    // 把整棵组件树带崩（白屏），帖子明明还在内存里却发不出去。
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    } catch (err) {
+      console.error("保存到 localStorage 失败：", err);
+      alert(
+        "浏览器本地存储已满，这条内容无法持久化（图片太占空间，刷新后会丢失）",
+      );
+    }
   }, [posts]);
   // listen for account changes
   useEffect(() => {
@@ -92,11 +101,14 @@ export default function App() {
       comments: [],
       images: images,
     };
-    // 2) 用同一个对象构造待签名文本（不是重新拼一遍参数！）
-    const message = buildPostMessage(newPost);
+    // 2) 构造待签名文本 —— 走 sign.ts 的唯一入口，验证侧调的是同一个函数
+    console.log("signing message:\n" + buildPostMessage(newPost));
     try {
       // 3) 签名
-      const signature = await walletClient.signMessage({ account, message });
+      const signature = await signPost({
+        ...newPost,
+        signMessage: (args) => walletClient.signMessage(args),
+      });
       // 4) 签名成功才入库
       setPosts([{ ...newPost, signature }, ...posts]);
       return true;
@@ -146,7 +158,7 @@ export default function App() {
           // 添加点赞
           return {
             ...post,
-            likes: [...post?.likes, account],
+              likes: [...post?.likes, account],
           };
         }
       }),
@@ -234,7 +246,7 @@ export default function App() {
             onDeleteComment={deleteComment}
           />
         ))}
-        <NewPost onSubmit={createPost} />
+        <NewPost currentAccount={account} onSubmit={createPost} />
       </main>
     </div>
   );

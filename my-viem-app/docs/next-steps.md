@@ -1,47 +1,53 @@
 
 # Next Steps for Web3 Social App
 
-## 🚧 Blocking: finish Step 0 (type errors) first
+## ✅ Step 0 done, Step 4 (post signing) closed loop (2026-09-16)
 
-`npx tsc --noEmit` reports **3 errors**, all in `src/sign.ts` (unused imports `recoverMessageAddress`, `Hex`, `isSameAddress`) — the project cannot build until they are resolved.
-
-Progress: 13 → 10 → **3** errors.
+`npx tsc --noEmit` → **0 errors**; `npm run build` → **success**.
 
 1. ✅ Delete leftover `images` / `setImages` state in `Post.tsx`
-2. ✅ Unify `NewPost.onSubmit` to `images?: string[]` (note: declared optional, not required — see review doc)
-3. ✅ `currentAccount` on `NewPost` — option (b) chosen: attribute dropped from `App.tsx`. **Side effect still open:** unconnected users clicking "Post" get no feedback at all
+2. ✅ Unify `NewPost.onSubmit` to `images?: string[]`
+3. ✅ `currentAccount` on `NewPost` — re-added and actually used: Post button is disabled while disconnected, with a "请先连接钱包再发帖" hint
 4. ✅ `mockPosts.ts` — `comments: []` added, unused `Address` import dropped
-5. ⬜ `sign.ts` — drop the 3 unused imports (or write `signPost` / `verifyPost` now, which uses them)
-
-Also open: is the removal of `Post`'s `onSubmit` intentional? And should post signatures cover `images`?
+5. ✅ `sign.ts` — chose route (ii): wrote `signPost` / `verifyPost`, so the 3 imports are used for real
+6. ✅ `Post.tsx` — fixed the `isSubmittingg` typo; button now shows "等待签名…" and is disabled while signing
+7. ✅ Signature badge in `Post.tsx` (✅ valid / ⚠️ mismatch / ⚠️ broken / 未签名)
+8. ✅ Image upload validation (type + 5MB) and try/catch around `localStorage.setItem`
 
 📋 Full checklist with reasons: **[step0-review.md](./step0-review.md)**
+📋 Current task + manual acceptance list: **[web3-social-mvp.md](./web3-social-mvp.md)**
 
 ## Testing & Verification
 
-1. **Run the app** - Test the wallet connection and account switching functionality to verify the fix works
-2. **Test the posting feature** - Make sure creating posts works correctly
+1. **Browser walkthrough** — run `npm run dev` and follow the 6-item acceptance list in `web3-social-mvp.md`
+2. **Tamper test (the convincing one)** — edit a post's `content` in localStorage, refresh, badge must turn red
 
 ## Feature Enhancements
 
-3. **Add delete post functionality** - Allow users to delete their own posts
-4. **Add like/reaction system** - Let users react to posts
-5. **Add comments** - Allow users to comment on posts
-6. **Add user profiles** - Show more info about post authors
-7. **Add post editing** - Let users edit their posts
+3. **Sign comments too** — right now only posts carry a signature
+4. **Add like/reaction polish** — likes are not signed, so they stay locally trusted (fine for MVP)
+5. **Add user profiles** - Show more info about post authors
+6. **Add post editing** - Let users edit their posts (note: editing requires re-signing)
 
 ## Code Improvements
 
-8. **Add error handling** - Better error messages for wallet connection failures
-9. **Add loading states** - Show spinners during wallet connection
-10. **Add timestamp formatting** - Display "2 hours ago" instead of raw dates
-11. **Add empty state** - Show a message when there are no posts
+7. **Add error handling** - Better error messages for wallet connection failures
+8. **Add loading states** - Show spinners during wallet connection
+9. **Add timestamp formatting** - Display "2 hours ago" instead of raw dates
+10. **Add empty state** - Show a message when there are no posts
 
 ## Technical Improvements
 
-12. **Add tests** - Write unit tests for the app
-13. **Improve TypeScript types** - Add better type definitions for window.ethereum
-14. **Add disconnect wallet button** - Allow users to disconnect
+11. **Add tests** - Write unit tests for the app (the sign/verify cases checked manually are a good starting suite)
+12. **`window.ethereum` types** - ✅ already done (`src/vite-env.d.ts` declares `Window.ethereum?: EIP1193Provider`)
+13. **Migrate off base64-in-localStorage** — quota is the hard ceiling; real image hosting is the fix
+14. **Delete or use the `User` type** — declared in `type.ts` but never referenced (dead code)
+
+## Where to go next
+
+`docs/web3-social-mvp.md` now has a per-level acceptance table plus the honest limits of client-side
+signature verification. The highest-value next step is **Level 5: backend / multi-device sync** —
+server-side verification is the first place a signature actually proves something.
 
 ## Recent Fixes
 
