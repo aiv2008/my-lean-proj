@@ -1,0 +1,6 @@
+# 源码文件统一在仓库内保存LF，本地不自动转CRLF
+*.lean text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.ts text eol=lf
+*.el text eol=lf

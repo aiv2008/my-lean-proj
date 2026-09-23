@@ -1,0 +1,112 @@
+﻿emacs.exe : 
+At line:1 char:293
++ ... e-order.el" 2>&1; & $e -Q --batch -l "$d\probe-order.el" 2>&1 | Out-F ...
++                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Source file `d:/home/anson/.emacs.d/elpa/dracula-theme-20260719.2050/dracula-theme.el' newer than byte-compiled file; u
+sing older file
+Source file `d:/home/anson/.emacs.d/elpa/dracula-theme-20260719.2050/dracula-theme.el' newer than byte-compiled file; u
+sing older file
+Source file `d:/home/anson/.emacs.d/elpa/marginalia-20260724.810/marginalia.el' newer than byte-compiled file; using ol
+der file
+Source file `d:/home/anson/.emacs.d/elpa/dash-20260221.1346/dash.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/magit-section-20260731.2248/magit-section.el' newer than byte-compiled file; u
+sing older file
+Source file `d:/home/anson/.emacs.d/elpa/cond-let-20260701.1237/cond-let.el' newer than byte-compiled file; using older
+ file
+Source file `d:/home/anson/.emacs.d/elpa/llama-20260601.1455/llama.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/transient-20260806.1211/transient.el' newer than byte-compiled file; using old
+er file
+Source file `d:/home/anson/.emacs.d/elpa/f-20241003.1131/f.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/s-20260522.135/s.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/ht-20230703.558/ht.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/lv-20200507.1518/lv.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/spinner-1.7.4/spinner.el' newer than byte-compiled file; using older file
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-mode.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+Source file `d:/home/anson/.emacs.d/elpa/nerd-icons-20260805.635/nerd-icons-data.el' newer than byte-compiled file; usi
+ng older file
+../../.emacs.d/init.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and-let*' instead.
+../../.emacs.d/init.el: Warning: `if-let' is an obsolete macro (as of 31.1); use `if-let*' instead.
+PYIM: Add dict "Basedict-elpa" to `pyim-extra-dicts'.
+
+Loading quail/latin-ltx (native-compiled elisp)...
+
+
+
+
+
+File mode specification error: (permission-denied "Opening output file" "Permission denied" "d:/home/anson/.emacs.d/.ls
+p-session-v1")
+== define-derived-mode 的展开顺序 ==
+(progn
+  (progn
+    :autoload-end (defvar foo-x-hook nil)
+    (unless (get 'foo-x-hook 'variable-documentation)
+      (put 'foo-x-hook 'variable-documentation
+	   "Hook run after entering `foo-x'.\nNo problems result if this variable is not bound.\n`add-hook' automatically binds it.  (This is true for all hook variables.)"))
+    (unless (boundp 'foo-x-map)
+      (put 'foo-x-map 'definition-name 'foo-x))
+    (with-no-warnings (defvar-keymap foo-x-map))
+    (unless (get 'foo-x-map 'variable-documentation)
+      (put 'foo-x-map 'variable-documentation "Keymap for `foo-x'."))
+    (progn
+      (defvar foo-x-syntax-table)
+      (unless (boundp 'foo-x-syntax-table)
+	(put 'foo-x-syntax-table 'definition-name 'foo-x)
+	(defvar foo-x-syntax-table (make-syntax-table)))
+      (unless (get 'foo-x-syntax-table 'variable-documentation)
+	(put 'foo-x-syntax-table 'variable-documentation
+	     "Syntax table for `foo-x'.")))
+    (progn
+      (defvar foo-x-abbrev-table)
+      (unless (boundp 'foo-x-abbrev-table)
+	(put 'foo-x-abbrev-table 'definition-name 'foo-x)
+	(defvar foo-x-abbrev-table
+	  (progn
+	    (define-abbrev-table 'foo-x-abbrev-table nil)
+	    foo-x-abbrev-table)))
+      (unless (get 'foo-x-abbrev-table 'variable-documentation)
+	(put 'foo-x-abbrev-table 'variable-documentation
+	     "Abbrev table for `foo-x'.")))
+    (if (fboundp 'derived-mode-set-parent)
+	(derived-mode-set-parent 'foo-x 'prog-mode)
+      (put 'foo-x 'derived-mode-parent 'prog-mode))
+    nil)
+  (defun foo-x nil
+    "Major mode derived from `prog-mode' by `define-derived-mode'.\nIt inherits all of the parent's attributes, but has its own keymap,\nabbrev table and syntax table:\n\n  `foo-x-map', `foo-x-abbrev-table' and `foo-x-syntax-table'\n\nwhich more-or-less shadow prog-mode's corresponding tables.\n\nIn addition to any hooks its parent mode might have run, this mode\nruns the hook `foo-x-hook', as the final or penultimate step during\ninitialization.\n\n\\{foo-x-map}"
+    (interactive)
+    (delay-mode-hooks
+      (prog-mode) (setq major-mode 'foo-x) (setq mode-name "FooX")
+      (progn
+	(if (get 'prog-mode 'mode-class)
+	    (put 'foo-x 'mode-class (get 'prog-mode 'mode-class)))
+	(unless (keymap-parent foo-x-map)
+	  (set-keymap-parent foo-x-map (current-local-map)))
+	(let ((parent (char-table-parent foo-x-syntax-table)))
+	  (unless
+	      (and parent (not (eq parent (standard-syntax-table))))
+	    (set-char-table-parent foo-x-syntax-table (syntax-table))))
+	(unless
+	    (or (abbrev-table-get foo-x-abbrev-table :parents)
+		(eq foo-x-abbrev-table local-abbrev-table))
+	  (abbrev-table-put foo-x-abbrev-table :parents
+			    (list local-abbrev-table))))
+      (use-local-map foo-x-map) (set-syntax-table foo-x-syntax-table)
+      (setq local-abbrev-table foo-x-abbrev-table) (foo-body))
+    (run-mode-hooks 'foo-x-hook)))
+
+== 打开 PipeTest.lean ==
+[lean4-set-keys 之后] buffer=PipeTest.lean local-map=t C-c C-x=lean4-std-exe C-c C-g=nil
+
+最终：C-c C-x=lean4-std-exe  C-c C-g=nil
+lean4-mode-map 对象=(keymap (9 . lean4-tab-indent) (3 keymap (4 . lean4-refresh-file-dependencies) (16 keymap (12 . lean4-lake-build)) (9 . lean4-toggle-info) (11 . quail-show-key) (12 . lean4-std-exe) (24 . lean4-std-exe)) (menu-bar keymap (lean\ 4 menu-item "Lean 4" (keymap "Lean 4" (Execute\ lean menu-item "Execute lean" lean4-execute) (Toggle\ info\ display menu-item "Toggle info display" lean4-toggle-info) (List\ of\ errors menu-item "List of errors" flycheck-list-errors :enable flycheck-mode) (Restart\ lean\ process menu-item "Restart lean process" lsp-workspace-restart) (Customize\ lean4-mode menu-item "Customize lean4-mode" menu-function-4 :key-sequence nil)))) keymap (27 keymap (113 . prog-fill-reindent-defun) (17 . prog-indent-sexp)))
+prog-mode-map 里的 C-c C-x=1（若被污染会看到 lean4-std-exe）

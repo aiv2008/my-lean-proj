@@ -1,0 +1,123 @@
+﻿emacs.exe : Source file `d:/home/anson/.emacs.d/elpa/dracula-theme-20260719.2050/dracula-theme.el' newer than byte-comp
+iled file; using older file
+At line:1 char:299
++ ... l.el" 2>&1; & $e -Q --batch -l "$d\verify-lean-final.el" 2>&1 | Out-F ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Source file `d:...sing older file:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Source file `d:/home/anson/.emacs.d/elpa/dracula-theme-20260719.2050/dracula-theme.el' newer than byte-compiled file; u
+sing older file
+Source file `d:/home/anson/.emacs.d/elpa/marginalia-20260724.810/marginalia.el' newer than byte-compiled file; using ol
+der file
+Source file `d:/home/anson/.emacs.d/elpa/dash-20260221.1346/dash.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/magit-section-20260731.2248/magit-section.el' newer than byte-compiled file; u
+sing older file
+Source file `d:/home/anson/.emacs.d/elpa/cond-let-20260701.1237/cond-let.el' newer than byte-compiled file; using older
+ file
+Source file `d:/home/anson/.emacs.d/elpa/llama-20260601.1455/llama.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/transient-20260806.1211/transient.el' newer than byte-compiled file; using old
+er file
+Source file `d:/home/anson/.emacs.d/elpa/f-20241003.1131/f.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/s-20260522.135/s.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/ht-20230703.558/ht.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/lv-20200507.1518/lv.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/spinner-1.7.4/spinner.el' newer than byte-compiled file; using older file
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-mode.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+Source file `d:/home/anson/.emacs.d/elpa/nerd-icons-20260805.635/nerd-icons-data.el' newer than byte-compiled file; usi
+ng older file
+../../.emacs.d/init.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and-let*' instead.
+../../.emacs.d/init.el: Warning: `if-let' is an obsolete macro (as of 31.1); use `if-let*' instead.
+PYIM: Add dict "Basedict-elpa" to `pyim-extra-dicts'.
+
+Loading quail/latin-ltx (native-compiled elisp)...
+
+
+
+
+Source file `d:/home/anson/.emacs.d/elpa/format-all-20260620.1824/format-all.el' newer than byte-compiled file; using o
+lder file
+Source file `d:/home/anson/.emacs.d/elpa/inheritenv-20241119.1355/inheritenv.el' newer than byte-compiled file; using o
+lder file
+Source file `d:/home/anson/.emacs.d/elpa/language-id-20241024.854/language-id.el' newer than byte-compiled file; using 
+older file
+[eglot] Connected! Server `Lean 4 Server' now managing `(lean4-mode)' buffers in project `my-lean-project'.
+
+
+
+== 1. PipeTest.lean：按键与运行 ==
+[PASS] 主模式 lean4-mode  -> lean4-mode
+[PASS] C-c C-x → my/lean-run  -> my/lean-run
+[PASS] C-c C-l → my/lean-run  -> my/lean-run
+[PASS] C-c C-g → my/lean-info-at-point  -> my/lean-info-at-point
+[PASS] eglot 连上 Lean 服务器  -> (:name "Lean 4 Server" :version "0.3.0")
+[PASS] 按 C-c C-x 生成 lake env lean <文件>  -> lake env lean "d:/home/anson/workspace/my-lean-proj/my-lean-project/PipeTest.lean"
+[PASS] C-c C-x 真跑：输出含全部 #eval 结果  -> 退出码 0
+[PASS] C-u C-c C-x 生成 --run  -> lake env lean --run "d:/home/anson/workspace/my-lean-proj/my-lean-project/PipeTest.lean"
+[PASS] 带 --run 真跑：打印 hello 2  -> 退出码 0
+
+---- *Lean Info*（PipeTest.lean:18）----
+位置：PipeTest.lean:18
+
+── 光标处类型 ──
+```lean
+IO Unit
+```
+***
+A pipe operator that feeds values from the right into functions on the left.
+
+`f <| x` means the same as `f x`, except that it parses `x` with lower precedence, which means that
+`f <| g <| x` is interpreted as `f (g x)` rather than `(f g) x`.
+
+
+── 期望类型 ──
+⊢ IO Unit
+
+
+[PASS] 信息面板给出光标处类型（IO Unit）
+
+---- *Lean Info*（Proofs.lean by 块内）----
+位置：Proofs.lean:20
+
+── 光标处类型 ──
+Assuming `x` is a variable in the local context with an inductive type,
+`induction x` applies induction on `x` to the main goal,
+producing one goal for each constructor of the inductive type,
+in which the target is replaced by a general instance of that constructor
+and an inductive hypothesis is added for each recursive argument to the constructor.
+If the type of an element in the local context depends on `x`,
+that element is reverted and reintroduced afterward,
+so that the inductive hypothesis incorporates that hypothesis as well.
+
+For example, given `n : Nat` and a goal with a hypothesis `h : P n` and target `Q n`,
+`induction n` produces one goal with hypothesis `h : P 0` and target `Q 0`,
+and one goal with hypotheses `h : P (Nat.succ a)` and `ih₁ : P a → Q a` and target `Q (Nat.succ a)`.
+Here the names `a` and `ih₁` are chosen automatically and are not accessible.
+You can use `with` to provide the variables names for each constructor.
+- `induction e`, where `e` is an expression instead of a variable,
+  generalizes `e` in the goal, and then performs induction on the resulting variable.
+- `induction e using r` allows the user to specify the principle of induction that should be used.
+  Here `r` should be a term whose result type must be of the form `C t`,
+  where `C` is a bound variable and `t` is a (possibly empty) sequence of bound variables
+- `induction e generalizing z₁ ... zₙ`, where `z₁ ... zₙ` are variables in the local context,
+  generalizes over `z₁ ... zₙ` before applying the induction but then introduces them in each goal.
+  In other words, the net effect is that each inductive hypothesis is generalized.
+- Given `x : Nat`, `induction x with | zero => tac₁ | succ x' ih => tac₂`
+  uses tactic `tac₁` for the `zero` case, and `tac₂` for the `succ` case.
+
+
+── 证明目标 ──
+[n : Nat
+⊢ 0 + n = n]
+
+
+[PASS] by 块里能看到证明目标（⊢ 0 + n = n）
+
+==== 11/11 通过 ====

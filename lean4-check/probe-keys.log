@@ -1,0 +1,60 @@
+﻿emacs.exe : Source file `d:/home/anson/.emacs.d/elpa/dracula-theme-20260719.2050/dracula-theme.el' newer than byte-comp
+iled file; using older file
+At line:1 char:292
++ ... obe-keys.el" 2>&1; & $e -Q --batch -l "$d\probe-keys.el" 2>&1 | Out-F ...
++                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Source file `d:...sing older file:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Source file `d:/home/anson/.emacs.d/elpa/dracula-theme-20260719.2050/dracula-theme.el' newer than byte-compiled file; u
+sing older file
+Source file `d:/home/anson/.emacs.d/elpa/marginalia-20260724.810/marginalia.el' newer than byte-compiled file; using ol
+der file
+Source file `d:/home/anson/.emacs.d/elpa/dash-20260221.1346/dash.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/magit-section-20260731.2248/magit-section.el' newer than byte-compiled file; u
+sing older file
+Source file `d:/home/anson/.emacs.d/elpa/cond-let-20260701.1237/cond-let.el' newer than byte-compiled file; using older
+ file
+Source file `d:/home/anson/.emacs.d/elpa/llama-20260601.1455/llama.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/transient-20260806.1211/transient.el' newer than byte-compiled file; using old
+er file
+Source file `d:/home/anson/.emacs.d/elpa/f-20241003.1131/f.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/s-20260522.135/s.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/ht-20230703.558/ht.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/lv-20200507.1518/lv.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/spinner-1.7.4/spinner.el' newer than byte-compiled file; using older file
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-mode.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+Source file `d:/home/anson/.emacs.d/elpa/nerd-icons-20260805.635/nerd-icons-data.el' newer than byte-compiled file; usi
+ng older file
+../../.emacs.d/init.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and-let*' instead.
+../../.emacs.d/init.el: Warning: `if-let' is an obsolete macro (as of 31.1); use `if-let*' instead.
+PYIM: Add dict "Basedict-elpa" to `pyim-extra-dicts'.
+Loading quail/latin-ltx (native-compiled elisp)...
+
+
+
+
+File mode specification error: (permission-denied "Opening output file" "Permission denied" "d:/home/anson/.emacs.d/.ls
+p-session-v1")
+major-mode = lean4-mode
+lean4-mode-hook 内容 = (#[nil ((local-set-key (kbd "C-c C-g") #'lean4-toggle-info) (local-set-key (kbd "C-c C-x") #'my/lean-run) (local-set-key (kbd "C-c C-l") #'my/lean-run) (local-set-key (kbd "M-/") #'company-complete)) (typescriptreact-mode-abbrev-table typescriptreact-mode-syntax-table t)] my/bind-xref-keys eglot-ensure)
+current-local-map 是 lean4-mode-map？ t
+current-local-map 是 prog-mode-map？ nil
+lookup-key(current-local-map, C-c C-x) = lean4-std-exe
+key-binding(C-c C-x) = lean4-std-exe
+key-binding(C-c C-g) = nil
+
+-- 手动再跑一次 lean4-mode-hook 之后 --
+key-binding(C-c C-x) = my/lean-run
+key-binding(C-c C-g) = lean4-toggle-info
+lookup-key(lean4-mode-map, C-c C-x) = my/lean-run
+
+-- eglot + lake serve 的 $/lean/plainGoal --
+eglot server = nil

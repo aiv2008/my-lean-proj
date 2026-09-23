@@ -1,0 +1,81 @@
+﻿emacs.exe : 
+At line:1 char:290
++ ... d\run-cmd2.el" 2>&1; & $e -Q --batch -l "$d\run-cmd2.el" 2>&1 | Out-F ...
++                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Source file `d:/home/anson/.emacs.d/elpa/dracula-theme-20260719.2050/dracula-theme.el' newer than byte-compiled file; u
+sing older file
+Source file `d:/home/anson/.emacs.d/elpa/dracula-theme-20260719.2050/dracula-theme.el' newer than byte-compiled file; u
+sing older file
+Source file `d:/home/anson/.emacs.d/elpa/marginalia-20260724.810/marginalia.el' newer than byte-compiled file; using ol
+der file
+Source file `d:/home/anson/.emacs.d/elpa/dash-20260221.1346/dash.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/magit-section-20260731.2248/magit-section.el' newer than byte-compiled file; u
+sing older file
+Source file `d:/home/anson/.emacs.d/elpa/cond-let-20260701.1237/cond-let.el' newer than byte-compiled file; using older
+ file
+Source file `d:/home/anson/.emacs.d/elpa/llama-20260601.1455/llama.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/transient-20260806.1211/transient.el' newer than byte-compiled file; using old
+er file
+Source file `d:/home/anson/.emacs.d/elpa/f-20241003.1131/f.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/s-20260522.135/s.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/ht-20230703.558/ht.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/lv-20200507.1518/lv.el' newer than byte-compiled file; using older file
+Source file `d:/home/anson/.emacs.d/elpa/spinner-1.7.4/spinner.el' newer than byte-compiled file; using older file
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-info.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+../../.emacs.d/lean4-mode/lean4-mode.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and
+-let*' instead.
+Source file `d:/home/anson/.emacs.d/elpa/nerd-icons-20260805.635/nerd-icons-data.el' newer than byte-compiled file; usi
+ng older file
+../../.emacs.d/init.el: Warning: `when-let' is an obsolete macro (as of 31.1); use `when-let*' or `and-let*' instead.
+../../.emacs.d/init.el: Warning: `if-let' is an obsolete macro (as of 31.1); use `if-let*' instead.
+PYIM: Add dict "Basedict-elpa" to `pyim-extra-dicts'.
+
+Loading quail/latin-ltx (native-compiled elisp)...
+
+
+
+
+File mode specification error: (permission-denied "Opening output file" "Permission denied" "d:/home/anson/.emacs.d/.ls
+p-session-v1")
+== 加载你的 init.el ==
+
+== 环境 ==
+executable-find lean     = "c:/Users/anson/AppData/Local/Microsoft/WinGet/Links/lean.exe"
+executable-find lake     = "c:/Users/anson/AppData/Local/Microsoft/WinGet/Links/lake.exe"
+lean4-rootdir（自动推导） = "c:/Users/anson/AppData/Local/Microsoft/WinGet/"
+lean4-executable-name    = "lean.exe"
+lean4-lake-name          = "lake.exe"
+
+== buffer ==
+major-mode = lean4-mode / eglot = nil
+C-c C-x -> lean4-std-exe ；C-c C-g -> nil
+lake 工程根 = "~/workspace/my-lean-proj/my-lean-project/"
+
+== 1) 官方 C-c C-x（当前环境）==
+lean4-get-executable 结果: Incorrect `lean4-rootdir' value, path 'c:/Users/anson/AppData/Local/Microsoft/WinGet/bin/lean.exe' does not exist
+
+== 2) 把 lean4-rootdir 指到项目锁定的 v4.31.0 toolchain ==
+命令 = "C:/Users/anson/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lake.exe" env "C:/Users/anson/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean.exe"  "d:/home/anson/workspace/my-lean-proj/my-lean-project/PipeTest.lean"
+实跑退出码 = 0
+输出:
+6
+[10, 20, 30, 7, 8]
+"<14>"
+"<14>"
+"<512>"
+"<3>"
+带 --run 的命令 = "C:/Users/anson/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lake.exe" env "C:/Users/anson/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean.exe" --run "d:/home/anson/workspace/my-lean-proj/my-lean-project/PipeTest.lean"
+实跑退出码 = 0
+输出末行: hello 2
+
+== 3) lean4-toggle-info-buffer（你绑的 C-c C-g）==
+结果: 报错: Wrong number of arguments: #[(buffer) ((let ((window (get-buffer-window buffer))) (if window (quit-window nil window) (lean4-ensure-info-buffer buffer) (display-buffer buffer)))) (lean4-info-mode-abbrev-table t) nil "Create or delete BUFFER.
+The buffer is supposed to be the *Lean Goal* buffer."], 0
